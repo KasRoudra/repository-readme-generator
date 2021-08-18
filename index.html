@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<!-- Original source owner https://github.com/arturssmirnovs -->
+<!-- Current file owner https://github.com/KasRoudra -->
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Repository Readme Generator</title>
+    <meta name="description" content="Repository readme generator is a tool that allows you to create simple and beautiful readme for your repository that you can copy/paste/download and include in that repository." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="KasRoudra" />
+    <meta name="twitter:title" content="Repository Readme Generator" />
+    <meta name="twitter:description" content="Repository readme generator is a tool that allows you to create simple and beautiful readme for your repository that you can copy/paste/download and include in that repository." />
+    <meta name="twitter:creator" content="KasRoudra" />
+    <meta name="twitter:image" content="https://KasRoudra.github.io/repository-readme-generator/images/banner.png" />
+
+    <meta property="og:title" content="Repository readme generator" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://KasRoudra.github.io/repository-readme-generator/" />
+    <meta property="og:image" content="https://KasRoudra.github.io/repository-readme-generator/images/banner.png" />
+    <meta property="og:description" content="Repository readme generator is a tool that allows you to create simple and beautiful readme for your repository that you can copy/paste/download and include in that repository." />
+    <meta property="og:site_name" content="repository-readme-generator" />
+
+    <link href="https://KasRoudra.github.io/repository-readme-generator/" rel="canonical" />
+    <!-- <link rel="icon" type="image/png" href="images/icon.png" /> -->
+    <link rel="shortcut icon" href="./images/github-light.png" type="image/x-icon" id="faviconTag">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/vue-simple-markdown.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- TODO: Record new GIF for README -->
+    <div id="app" class="container-xl">
+        <app-nav>
+            <div class="jumbotron">
+                <h1 class="display-5 bold" align="center"><u><b>Repository Readme Generator</b></u></h1>
+                <p class="lead">Super simple repository readme generator made with <span style="color: #41B883; font-weight: bold;">Vue.js</span>, that allows you to create beautiful README.md files for your repository that you can copy or paste or download.</p>
+                <hr class="my-4">
+                <p>What is a Repository Readme? Check out this repository as example.</p>
+                <p class="lead mb-0">
+                    <a class="btn btn-primary btn-lg" href="https://github.com/KasRoudra/repository-readme-generator/blob/master/README.md" target="_blank" role="button">README.md</a>
+                </p>
+            </div>
+        </app-nav>
+
+        <app-view class="row">
+            <app-content class="col-xs-12 col-md-6">
+                <div class="md-tips mt-3">
+                    <p>Markdown Tips:</p>
+                    <ul>
+                        <li>To <b>bolden</b> the text, wrap it with two asterisks (*) (<code>**<b>word</b>**</code>)</li>
+                        <li>To <i>italisize</i> the text, wrap it with one asterisk (*) (<code>*<i>word</i>*</code>)</li>
+                        <li>To <s>strikethrough</s> the text, wrap it with two tildes (~) (<code>~~<s>word</s>~~</code>)</li>
+                        <li>To make a <a href="#">link</a>, place the link text in brackets and the url in parentheses
+                            (<code>[<a href="https://example.com">link</a>](https://example.com)</code>)</li>
+                        <li>To make an <img class="example-icon" src="images/image.png"/> image, place an !, the alt
+                            text in brackets, and the url in parentheses (<code>![alt-text](/path/image.png)</code>)</li>
+                    </ul>
+                    <p>
+                        Learn more:
+                        <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+                            https://guides.github.com/features/mastering-markdown/
+                        </a>
+                    </p>
+                </div>
+                
+                <nav class="nav nav-pills nav-justified">
+                    <a class="nav-item nav-link" href="#" onclick="return false;" @click="tab = 'header'" :class="[tab == 'header' ? 'active' : '', '']">Header</a>
+                    <a class="nav-item nav-link" href="#" onclick="return false;" @click="tab = 'stats'" :class="[tab == 'stats' ? 'active' : '', '']">Stat Images</a>
+                    <a class="nav-item nav-link" href="#" onclick="return false;" @click="tab = 'additional'" :class="[tab == 'additional' ? 'active' : '', '']">Installation</a>
+                    <a class="nav-item nav-link" href="#" onclick="return false;" @click="tab = 'others'" :class="[tab == 'others' ? 'active' : '', '']">Others</a>                    
+                </nav>
+
+                <div v-show="tab == 'header'" class="tab">
+                    <h3>Header</h3>
+
+                    <div class="form-group">
+                        <label>Repository name</label>
+                        <input
+                            type="text"
+                            v-model="data.title"
+                            placeholder="Enter repository/tool name"
+                            class="form-control"
+                            aria-label="Repository Name"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Motto</label>
+                        <input
+                            type="text"
+                            v-model="data.subtitle"
+                            placeholder="Enter motto"
+                            class="form-control"
+                            aria-label="Motto"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea
+                            v-model="data.text"
+                            placeholder="Enter description.."
+                            class="form-control"
+                            aria-label="Description"
+                        >{{data.text}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Banner URL</label>
+                        <input
+                            type="text"
+                            v-model="data.banner"
+                            placeholder="Enter URL..."
+                            class="form-control"
+                            aria-label="Banner URL"
+                        />
+                    </div>
+                </div>
+
+                <div v-show="tab == 'stats'" class="tab">
+                    <h3 class="header">Image Statistics</h3>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="form-group mb-4">
+                                <div class="social-title">
+                                    <label>Username</label>
+                                </div>
+                                <input
+                                        type="text"
+                                        v-model="data.username"
+                                        placeholder="Enter your username"
+                                        class="form-control mb-2"
+                                        aria-label="Username"
+                                />
+                                <p>GitHub username required for API</p>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-12">
+                            <div class="form-group mb-4">
+                                <div class="social-title">
+                                    <label>Repository</label>
+                                </div>
+                                <input
+                                        type="text"
+                                        v-model="data.repo"
+                                        placeholder="Enter your repository..."
+                                        class="form-control mb-2"
+                                        aria-label="Repo name"
+                                />
+                                <p>Repository required for API</p>
+                            </div>
+                        </div>                       
+                    </div>
+
+                    <div v-bind:class="[data.username ? 'social-stats active' : 'social-stats disabled']">
+                        <h4>API Based</h4>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1" v-model="data.stars" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="customCheck1"
+                                    >Show repo stars</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck2" v-model="data.forks" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="customCheck2"
+                                    >Show Repo forks</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck6" v-model="data.repocard" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="customCheck6"
+                                    >Show Repo Card</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="activityStats" v-model="data.license" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="activityStats"
+                                    >Show Repository license</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck3" v-model="data.issues" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="customCheck3"
+                                    >Show Issues</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="defaultCheck4" v-model="data.contributors" :disabled="!(data.username && data.repo)">
+                                    <label
+                                            class="custom-control-label"
+                                            for="defaultCheck4"
+                                    >Show Contributors</label>
+                                </div>
+                                <span style="color:red"><i>If images do not appear, please manually visit <a href="https://img.shields.io">https://img.shields.io</a> to unblock your IP.</i></span>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-3">Custom images</h4>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                <label>Author</label>
+                                <input
+                                    type="text"
+                                    v-model="data.author"
+                                    placeholder="Enter author name..."
+                                    class="form-control"
+                                    aria-label="Author name"
+                                />
+                            </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                <label>Open Source</label>
+                                <input
+                                    type="text"
+                                    v-model="data.opensource"
+                                    placeholder="Yes or No"
+                                    class="form-control"
+                                    aria-label="Open Source"
+                                />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                <label>Maintained</label>
+                                <input
+                                    type="text"
+                                    v-model="data.maintained"
+                                    placeholder="Yes or No"
+                                    class="form-control"
+                                    aria-label="Maintained"
+                                />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                <label>Made in</label>
+                                <input
+                                    type="text"
+                                    v-model="data.madein"
+                                    placeholder="Country"
+                                    class="form-control"
+                                    aria-label="Made in"
+                                />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                <label>Written in</label>
+                                <input
+                                    type="text"
+                                    v-model="data.planguage"
+                                    placeholder="Programming Language"
+                                    class="form-control"
+                                    aria-label="planguage"
+                                />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-show="tab == 'additional'" class="tab">
+                    <h3>How to install</h3>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Installation</label>
+                                <input
+                                    type="text"
+                                    v-model="data.installation1"
+                                    placeholder="Enter first command..."
+                                    class="form-control"
+                                    aria-label="Installation1"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.installation2"
+                                    placeholder="Enter second command..."
+                                    class="form-control"
+                                    aria-label="Installation2"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.installation3"
+                                    placeholder="Enter third command..."
+                                    class="form-control"
+                                    aria-label="Installation3"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.installation4"
+                                    placeholder="Enter fourth command..."
+                                    class="form-control"
+                                    aria-label="Installation4"
+                                />                                
+                            </div>
+                        </div>
+                    </div>
+                    <h3>How to use</h3>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label>Usage</label>
+                                <input
+                                    type="text"
+                                    v-model="data.usage1"
+                                    placeholder="Enter first command..."
+                                    class="form-control"
+                                    aria-label="Usage1"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.usage2"
+                                    placeholder="Enter second command..."
+                                    class="form-control"
+                                    aria-label="Usage2"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.usage3"
+                                    placeholder="Enter third command..."
+                                    class="form-control"
+                                    aria-label="Usage3"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.usage4"
+                                    placeholder="Enter fourth command..."
+                                    class="form-control"
+                                    aria-label="Usage4"
+                                />                                
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+
+                <div v-show="tab == 'others'" class="tab">
+                    <h3>Additional information</h3>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">                        
+                            <div class="form-group">
+                                <div class="social-title">
+                                    <label>Screenshot</label>
+                                </div>
+                                <input
+                                    type="text"
+                                    v-model="data.screenshot"
+                                    placeholder="Enter screenshot image/gif path..."
+                                    class="form-control"
+                                    aria-label="Screenshot"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <div class="social-title">
+                                    <label>Requirements</label>
+                                </div>
+                                <input
+                                    type="text"
+                                    v-model="data.requirement1"
+                                    placeholder="Enter first requirement..."
+                                    class="form-control"
+                                    aria-label="Requirement1"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.requirement2"
+                                    placeholder="Enter second requirement..."
+                                    class="form-control"
+                                    aria-label="Requirement2"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.requirement3"
+                                    placeholder="Enter third requirement..."
+                                    class="form-control"
+                                    aria-label="Requirement3"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.requirement4"
+                                    placeholder="Enter fourth requirement..."
+                                    class="form-control"
+                                    aria-label="Requirement4"
+                                />                     
+                            </div>                            
+                            <div class="form-group">
+                                <div class="social-title">
+                                    <label>Features</label>
+                                </div>
+                                <input
+                                    type="text"
+                                    v-model="data.features1"
+                                    placeholder="Enter first feature..."
+                                    class="form-control"
+                                    aria-label="Features1"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.features2"
+                                    placeholder="Enter second feature..."
+                                    class="form-control"
+                                    aria-label="Features2"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.features3"
+                                    placeholder="Enter third feature..."
+                                    class="form-control"
+                                    aria-label="Features3"
+                                />
+                                <br>
+                                <input
+                                    type="text"
+                                    v-model="data.features4"
+                                    placeholder="Enter fourth feature..."
+                                    class="form-control"
+                                    aria-label="Features4"
+                                />                     
+                            </div>
+                        </div>
+                        
+                        <div class="col-xs-12 col-md-6">                        
+                            <div class="form-group">
+                                <div class="social-title">
+                                    <label>Disclaimer</label>
+                                </div>
+                                <textarea
+                                    type="text"
+                                    v-model="data.disclaimer"
+                                    placeholder="Enter disclaimer..."
+                                    class="form-control"
+                                    aria-label="Disclaimer"
+                                >{{data.disclaimer}}</textarea>
+                            </div>
+                           
+                            <div class="form-group">
+                                <div class="social-title">
+                                    <label>Credits</label>
+                                </div>
+                                
+                                <span>Username</span>
+                                <input
+                                    type="text"
+                                    v-model="data.credit1"
+                                    placeholder="Enter name..."
+                                    class="form-control"
+                                    aria-label="Disclaimer"
+                                />
+                                <br>
+                                <span>Repository Link</span>
+                                <input
+                                    type="text"
+                                    v-model="data.credit2"
+                                    placeholder="Enter url..."
+                                    class="form-control"
+                                    aria-label="URL"
+                                />
+                            </div>
+                             <div class="form-group">
+                                <div class="social-title">
+                                    <label>Find me on</label>
+                                </div>
+                                
+                                <span>Facebook/Messenger Username</span>
+                                <input
+                                    type="text"
+                                    v-model="data.fb"
+                                    placeholder="Enter username..."
+                                    class="form-control"
+                                    aria-label="Username"
+                                />
+                                <br>
+                                <span>Email</span>
+                                <input
+                                    type="text"
+                                    v-model="data.email"
+                                    placeholder="Enter email..."
+                                    class="form-control"
+                                    aria-label="Email"
+                                />
+                            </div>                               
+                        </div>
+
+                        <div class="col-xs-12 col-md-12">
+                            <h4>Others</h4>
+                        </div>
+                        <div class="col-xs-12 col-md-12" v-for="item in data.items">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input
+                                            type="text"
+                                            v-model="item.title"
+                                            class="form-control"
+                                            placeholder="Enter title"
+                                            aria-label="Title"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Texts</label>
+                                        <textarea
+                                            type="text"
+                                            v-model="item.value"
+                                            placeholder="Enter texts.."
+                                            class="form-control"
+                                            aria-label="Text"
+                                        >{{item.value}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-12">
+                            <button @click="addItem" class="btn btn-primary" >Add more</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </app-content>
+
+            <app-sidebar class="col-xs-12 col-md-6 mt-3">
+            <h2 class="card-title" align="center"><u>Preview</u></h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <vue-markdown :source="source"></vue-markdown>
+                    </div>
+                </div>
+                <h2 class="card-title" align="center"><u>Code</u></h2>
+                <div class="card mb-4">
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button class="btn btn-primary mb-2 d-flex" @click="copyCode">
+                                <svg style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> &nbsp;
+                                <span>Copy</span>
+                            </button>
+                            <h4 class="card-title">README.md</h4>
+                            <button class="btn btn-primary mb-2 d-flex" @click="download">
+                                <span>Download</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-danger" role="alert" v-if="forced">
+                            Changing source manually could result in lost of data if you use generation fields again.
+                        </div>
+                        <!-- TODO: Highlight the textarea as markdown code -->
+                        <textarea v-model="source" @keyup="onKeyUp" class="form-control" ref="code">{{ source }}</textarea>
+                    </div>
+                </div>
+
+            </app-sidebar>
+
+        </app-view>
+
+    </div>
+    <h5 align="center">If this helped you, consider giving a <a href="https://github.com/KasRoudra/repository-readme-generator">star</a>!</h5>
+
+    <footer>
+
+        <div class="container">
+            <p>Made with ❤ by <a href="https://github.com/KasRoudra" target="_blank">KasRoudra</a>.</p>
+            <p>&copy; Copyright 2021 | All Rights Preserved</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-markdown@2.2.4/dist/vue-markdown.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const faviconTag = document.getElementById("faviconTag");
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)");
+        const changeFavicon = () => {
+            if (isDark.matches) faviconTag.href = "./images/github-dark.png";
+            else faviconTag.href = "./images/github-light.png";
+        };
+        
+        changeFavicon();
+        
+        isDark.addEventListener('change', changeFavicon);
+    </script>
+</body>
+</html>
